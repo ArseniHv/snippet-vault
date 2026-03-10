@@ -52,7 +52,7 @@ In SQL this is a JOIN between `snippets` and `users` on every read. In MongoDB t
 
 In SQL this requires a `snippet_tags` junction table, a JOIN, and a GROUP BY to reassemble. MongoDB indexes each array element individually and queries like `{ tags: "typescript" }` are first-class citizens.
 
-**4. Embedded version history (Add-on B)**
+**4. Embedded version history**
 ```json
 "versionHistory": [
   { "versionNumber": 1, "content": "...", "savedAt": "..." }
@@ -94,7 +94,7 @@ snippet-vault/
 
 ### Run locally with Docker Compose
 ```bash
-git clone https://github.com/YOUR_USERNAME/snippet-vault.git
+git clone https://github.com/ArseniHv/snippet-vault.git
 cd snippet-vault
 mvn clean package -DskipTests
 docker compose up --build
@@ -105,15 +105,14 @@ docker compose up --build
 The API will be available at `http://localhost:8080`.
 
 ### Run locally without Docker
-
-Start MongoDB:
 ```bash
 docker compose up mongodb -d
+mvn spring-boot:run
 ```
 
-Start the app:
+## Running Tests
 ```bash
-mvn spring-boot:run
+mvn clean test
 ```
 
 ## API Reference
@@ -170,51 +169,3 @@ All list endpoints support pagination and sorting via query parameters:
 GET /api/snippets/me?page=0&size=20&sort=createdAt,desc
 GET /api/snippets/search/language/typescript?page=0&size=10&sort=viewCount,desc
 ```
-
-## Deployment (AWS EC2)
-
-See [AWS Deployment](#aws-deployment) section below.
-
-## Running Tests
-```bash
-mvn clean test
-```
-
-## AWS Deployment
-
-### 1. Launch an EC2 instance
-
-- AMI: Ubuntu 22.04 LTS
-- Instance type: `t2.micro` (free tier)
-- Security group inbound rules:
-  - Port 22 (SSH)
-  - Port 8080 (HTTP)
-
-### 2. SSH into the instance
-```bash
-ssh -i your-key.pem ubuntu@YOUR_EC2_PUBLIC_IP
-```
-
-### 3. Install Docker
-```bash
-sudo apt-get update
-sudo apt-get install -y docker.io docker-compose-plugin
-sudo usermod -aG docker ubuntu
-newgrp docker
-```
-
-### 4. Clone and run
-```bash
-git clone https://github.com/YOUR_USERNAME/snippet-vault.git
-cd snippet-vault
-JWT_SECRET=your-strong-random-secret docker compose up --build -d
-```
-
-### 5. Verify
-```bash
-curl http://YOUR_EC2_PUBLIC_IP:8080/actuator/health
-```
-
-Once live, add your EC2 public URL here:
-
-**Live URL:** `http://YOUR_EC2_PUBLIC_IP:8080`
