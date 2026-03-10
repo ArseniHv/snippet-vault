@@ -23,11 +23,11 @@ public class SnippetDocument {
     @Id
     private String id;
 
-    @TextIndexed(weight = 3)   
+    @TextIndexed(weight = 3)
     private String title;
 
     @Indexed
-    private String language;
+    private String programmingLanguage;
 
     @TextIndexed(weight = 1)
     private String description;

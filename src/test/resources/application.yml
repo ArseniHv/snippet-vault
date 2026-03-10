@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: snippetvault-test
+
+jwt:
+  secret: test-secret-key-for-testing-only-32chars
+  expiration-ms: 86400000

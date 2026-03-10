@@ -23,7 +23,8 @@ public class MongoConfig {
                 .onField("title", 3F)
                 .onField("content", 2F)
                 .onField("description", 1F)
-                .build();
+                .withDefaultLanguage("none")
+        .build();
 
         mongoTemplate.indexOps(SnippetDocument.class).ensureIndex(textIndex);
 
