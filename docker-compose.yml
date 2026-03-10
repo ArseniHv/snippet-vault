@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: snippetvault-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: snippetvault
+    volumes:
+      - mongo_data:/data/db
+
+  app:
+    build: .
+    container_name: snippetvault-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/snippetvault
+      JWT_SECRET: ${JWT_SECRET:-change-this-secret-in-production-32chars}
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo_data:

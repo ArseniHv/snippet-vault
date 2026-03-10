@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: snippet-vault
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/snippetvault}
+      database: snippetvault
+
+server:
+  port: 8080
+
+jwt:
+  secret: ${JWT_SECRET:local-dev-secret-change-in-production-must-be-32-chars}
+  expiration-ms: 86400000  # 24 hours
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.snippetvault: DEBUG
